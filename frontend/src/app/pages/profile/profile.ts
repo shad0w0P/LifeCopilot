@@ -12,6 +12,7 @@ import { UserProfile } from '../../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { API_CONFIG } from '../../core/api.config';
 import { firstValueFrom } from 'rxjs';
+import { LogoComponent } from '../../components/logo/logo';
 
 @Component({
   selector: 'app-profile',
@@ -24,7 +25,8 @@ import { firstValueFrom } from 'rxjs';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    LogoComponent
   ],
   templateUrl: './profile.html'
 })

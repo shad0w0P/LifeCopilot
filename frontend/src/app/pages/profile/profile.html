@@ -2,14 +2,8 @@
   <!-- Sidebar Navigation -->
   <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between p-4">
     <div>
-      <div class="flex items-center gap-3 px-2 py-4 mb-6">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-pink-500 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/20">
-          <mat-icon>fingerprint</mat-icon>
-        </div>
-        <div>
-          <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">LifeCopilot</h1>
-          <span class="text-xs text-slate-500">Phase 1 Foundation</span>
-        </div>
+      <div class="px-2 py-4 mb-6">
+        <app-logo [size]="'md'" [theme]="'light'" [showTagline]="true"></app-logo>
       </div>
 
       <nav class="space-y-1">

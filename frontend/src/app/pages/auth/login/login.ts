@@ -7,8 +7,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../../services/auth.service';
+import { LogoComponent } from '../../../components/logo/logo';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +24,9 @@ import { AuthService } from '../../../services/auth.service';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    LogoComponent
   ],
   templateUrl: './login.html'
 })
@@ -39,6 +43,13 @@ export default class LoginComponent {
   hidePassword = signal<boolean>(true);
   errorMessage = signal<string | null>(null);
   loading = this.authService.loading;
+  
+  // UI Tabs State
+  activeTab = signal<'email' | 'phone'>('email');
+  
+  // Mock dropdown open state
+  langMenuOpen = signal<boolean>(false);
+  activeLang = signal<string>('English');
 
   async onSubmit(): Promise<void> {
     if (this.loginForm.invalid) return;

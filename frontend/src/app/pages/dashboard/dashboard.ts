@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
 import { HeaderComponent } from '../../components/header/header';
 import { RoadmapCardComponent } from '../../components/roadmap-card/roadmap-card';
+import { LogoComponent } from '../../components/logo/logo';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +17,8 @@ import { RoadmapCardComponent } from '../../components/roadmap-card/roadmap-card
     MatButtonModule,
     MatIconModule,
     HeaderComponent,
-    RoadmapCardComponent
+    RoadmapCardComponent,
+    LogoComponent
   ],
   templateUrl: './dashboard.html'
 })

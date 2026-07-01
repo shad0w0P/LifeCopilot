@@ -1,0 +1,40 @@
+<div class="inline-flex flex-col items-center justify-center">
+  <div class="flex items-center gap-2.5">
+    <!-- SVG logo mark -->
+    <svg [class]="sizeClasses().svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="shrink-0">
+      <defs>
+        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#38bdf8" />
+          <stop offset="50%" stop-color="#2563eb" />
+          <stop offset="100%" stop-color="#7c3aed" />
+        </linearGradient>
+      </defs>
+      
+      <!-- 'C' Outer Ring -->
+      <path d="M 72 32 A 28 28 0 1 0 72 68" fill="none" stroke="url(#logoGrad)" stroke-width="11" stroke-linecap="round" />
+      
+      <!-- Inner Figure Head -->
+      <circle cx="50" cy="36" r="6.5" fill="url(#logoGrad)" />
+      
+      <!-- Inner Figure Swoosh Body -->
+      <path d="M 36 50 Q 50 62 64 46 Q 52 54 36 50 Z" fill="url(#logoGrad)" />
+      
+      <!-- Outer Spark Star -->
+      <path d="M 80 16 Q 80 26 90 26 Q 80 26 80 36 Q 80 26 70 26 Q 80 26 80 16 Z" fill="url(#logoGrad)" />
+    </svg>
+
+    <!-- Brand Name Text -->
+    @if (showText && size !== 'custom') {
+      <span [class]="sizeClasses().text" class="font-extrabold tracking-tight select-none flex items-center">
+        <span [class]="textClasses().brand">Life</span><span [class]="textClasses().copilot">Copilot</span>
+      </span>
+    }
+  </div>
+
+  <!-- Tagline text -->
+  @if (showTagline && size !== 'custom') {
+    <span [class]="sizeClasses().tag" [class.mt-1.5]="size === 'lg' || size === 'xl'" class="font-semibold tracking-wider uppercase select-none text-slate-400">
+      Your AI Life Assistant
+    </span>
+  }
+</div>

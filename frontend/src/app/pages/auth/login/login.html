@@ -1,72 +1,334 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900 px-4 py-12 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8 bg-white/5 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl transition duration-500 hover:border-indigo-500/30">
-    <div class="text-center">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-indigo-500 to-pink-500 text-white shadow-lg shadow-indigo-500/20 mb-4">
-        <mat-icon class="scale-125">fingerprint</mat-icon>
+<div class="h-screen w-screen overflow-hidden flex bg-white font-sans">
+  
+  <!-- Left Side Panel (Illustration + Features list) -->
+  <div class="hidden lg:flex flex-col justify-between w-[50%] h-full bg-gradient-to-br from-[#ebf2fe] via-[#f1f4fc] to-[#f8f0ff] p-12 xl:p-16 relative overflow-hidden select-none border-r border-slate-200 shrink-0">
+    
+    <!-- Top Brand Header -->
+    <div class="space-y-4 xl:space-y-6 z-10">
+      <app-logo [size]="'md'" [theme]="'dark'"></app-logo>
+      
+      <!-- Feature Badge -->
+      <div class="inline-flex px-3.5 py-1 rounded-full bg-indigo-100/50 border border-indigo-200/40 text-indigo-700 text-xs font-bold uppercase tracking-wider">
+        Your AI Life Assistant
       </div>
-      <h2 class="text-3xl font-extrabold text-white tracking-tight">LifeCopilot</h2>
-      <p class="mt-2 text-sm text-slate-400">Securely sign in to your personal life vault</p>
+      
+      <!-- Big Header Titles -->
+      <div class="space-y-3 xl:space-y-4 max-w-lg">
+        <h1 class="text-4xl xl:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          Everything in Life, <br>
+          <span class="bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">One Intelligent Copilot.</span>
+        </h1>
+        <p class="text-slate-600 text-sm xl:text-base leading-relaxed">
+          Manage your documents, finances, reminders and important life events with AI-powered guidance.
+        </p>
+      </div>
+      
+      <!-- Feature list items -->
+      <div class="space-y-4 pt-2 max-w-md">
+        <!-- Item 1 -->
+        <div class="flex items-start gap-4">
+          <div class="w-9 h-9 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-600 shrink-0">
+            <mat-icon class="scale-75">security</mat-icon>
+          </div>
+          <div>
+            <h4 class="text-xs xl:text-sm font-bold text-slate-800">Secure & Private</h4>
+            <p class="text-[11px] xl:text-xs text-slate-500">Your data is encrypted and 100% yours.</p>
+          </div>
+        </div>
+        
+        <!-- Item 2 -->
+        <div class="flex items-start gap-4">
+          <div class="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 shrink-0">
+            <mat-icon class="scale-75">auto_awesome</mat-icon>
+          </div>
+          <div>
+            <h4 class="text-xs xl:text-sm font-bold text-slate-800">AI-Powered Insights</h4>
+            <p class="text-[11px] xl:text-xs text-slate-500">Get proactive suggestions for a better life.</p>
+          </div>
+        </div>
+        
+        <!-- Item 3 -->
+        <div class="flex items-start gap-4">
+          <div class="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-600 shrink-0">
+            <mat-icon class="scale-75">notifications</mat-icon>
+          </div>
+          <div>
+            <h4 class="text-xs xl:text-sm font-bold text-slate-800">Never Miss Anything</h4>
+            <p class="text-[11px] xl:text-xs text-slate-500">Smart reminders for what matters most.</p>
+          </div>
+        </div>
+        
+        <!-- Item 4 -->
+        <div class="flex items-start gap-4">
+          <div class="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-600 shrink-0">
+            <mat-icon class="scale-75">grid_view</mat-icon>
+          </div>
+          <div>
+            <h4 class="text-xs xl:text-sm font-bold text-slate-800">All-in-One Dashboard</h4>
+            <p class="text-[11px] xl:text-xs text-slate-500">Documents, finance, benefits & more.</p>
+          </div>
+        </div>
+      </div>
     </div>
-
-    @if (errorMessage()) {
-      <div class="bg-red-500/10 border border-red-500/20 text-red-200 text-sm p-4 rounded-lg flex items-center gap-2">
-        <mat-icon>error_outline</mat-icon>
-        <span>{{ errorMessage() }}</span>
-      </div>
-    }
-
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
-      <div class="space-y-4">
-        <div>
-          <mat-form-field appearance="outline" class="w-full text-white">
-            <mat-label class="text-slate-400">Email Address</mat-label>
-            <input matInput type="email" formControlName="email" placeholder="you@example.com" class="text-white" />
-            <mat-icon matSuffix class="text-slate-400">email</mat-icon>
-            @if (loginForm.controls.email.invalid && loginForm.controls.email.touched) {
-              <mat-error>Please enter a valid email address</mat-error>
-            }
-          </mat-form-field>
-        </div>
-
-        <div>
-          <mat-form-field appearance="outline" class="w-full">
-            <mat-label class="text-slate-400">Password</mat-label>
-            <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" placeholder="••••••••" class="text-white" />
-            <button mat-icon-button matSuffix type="button" (click)="hidePassword.set(!hidePassword())" class="text-slate-400">
-              <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-            </button>
-            @if (loginForm.controls.password.invalid && loginForm.controls.password.touched) {
-              <mat-error>Password must be at least 6 characters</mat-error>
-            }
-          </mat-form-field>
-        </div>
+    
+    <!-- Dashboard Coded Mockup (Directly Replicating Screenshot Image) -->
+    <div class="relative w-full h-[280px] xl:h-[320px] select-none z-10 shrink-0">
+      
+      <!-- Potted Plant (Bottom-left) -->
+      <div class="absolute bottom-0 left-0 w-20 h-20 xl:w-24 xl:h-24 z-20">
+        <svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-md">
+          <path d="M30 80 L70 80 L62 115 L38 115 Z" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.5"/>
+          <ellipse cx="50" cy="80" rx="20" ry="4" fill="#94a3b8"/>
+          <path d="M50 80 Q35 55 25 45 Q35 68 50 80 Z" fill="#4ade80" stroke="#22c55e" stroke-width="1.5"/>
+          <path d="M50 80 Q65 55 75 48 Q65 70 50 80 Z" fill="#4ade80" stroke="#22c55e" stroke-width="1.5"/>
+          <path d="M50 80 Q25 68 12 70 Q28 80 50 80 Z" fill="#22c55e" stroke="#16a34a" stroke-width="1.5"/>
+          <path d="M50 80 Q75 72 88 75 Q72 82 50 80 Z" fill="#22c55e" stroke="#16a34a" stroke-width="1.5"/>
+          <path d="M50 80 Q50 35 50 22 Q56 48 50 80 Z" fill="#4ade80" stroke="#22c55e" stroke-width="1.5"/>
+        </svg>
       </div>
 
-      <div>
-        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || loading()" class="w-full py-6 rounded-xl text-lg font-bold bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 shadow-lg shadow-indigo-600/30 text-white transition-all transform hover:-translate-y-0.5 active:translate-y-0">
-          @if (loading()) {
-            <div class="flex items-center justify-center gap-2">
-              <mat-spinner diameter="20" color="accent"></mat-spinner>
-              <span>Authenticating...</span>
+      <!-- Dashboard Central Card -->
+      <div class="absolute bottom-0 left-12 xl:left-16 w-72 xl:w-80 bg-white border border-slate-200/80 rounded-2xl shadow-xl p-4 space-y-3 xl:space-y-4">
+        <!-- Header controls -->
+        <div class="flex justify-between items-center text-slate-300">
+          <span class="text-[9px] xl:text-[10px] font-bold tracking-wider uppercase text-slate-400">Dashboard</span>
+          <div class="flex gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-200"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-200"></span>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div>
+          <h5 class="text-[11px] xl:text-xs font-black text-slate-700">Good Morning, Atul! 👋</h5>
+        </div>
+
+        <!-- Dashboard Stats Grid -->
+        <div class="grid grid-cols-2 gap-2.5 xl:gap-3">
+          
+          <!-- Left Column Cards -->
+          <div class="space-y-2.5 xl:space-y-3">
+            <!-- Priority Actions -->
+            <div class="bg-orange-50/50 border border-orange-100 p-2 xl:p-2.5 rounded-xl space-y-1 relative">
+              <span class="text-[8px] font-bold text-slate-400 uppercase tracking-wider">Priority Actions</span>
+              <div class="flex justify-between items-center pt-0.5">
+                <span class="text-[10px] xl:text-xs font-black text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded-md">3</span>
+                <mat-icon class="scale-50 text-orange-400">arrow_upward</mat-icon>
+              </div>
             </div>
-          } @else {
-            <span>Sign In</span>
-          }
+
+            <!-- Documents -->
+            <div class="bg-blue-50/50 border border-blue-100 p-2 xl:p-2.5 rounded-xl space-y-1 relative">
+              <span class="text-[8px] font-bold text-slate-400 uppercase tracking-wider">Documents</span>
+              <div class="flex justify-between items-center pt-0.5">
+                <span class="text-[10px] xl:text-xs font-black text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded-md">12</span>
+                <span class="text-[9px] xl:text-[10px] font-bold text-slate-600">12</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column Reminders -->
+          <div class="bg-indigo-50/30 border border-indigo-100 p-2 xl:p-2.5 rounded-xl flex flex-col justify-between items-center relative">
+            <div class="w-full flex justify-between items-center">
+              <span class="text-[8px] font-bold text-slate-400 uppercase tracking-wider">Upcoming Reminders</span>
+              <span class="text-[8px] font-bold text-indigo-600 bg-indigo-100 px-1 rounded">5</span>
+            </div>
+            
+            <!-- Pie Chart SVG -->
+            <div class="w-12 h-12 xl:w-14 xl:h-14 relative flex items-center justify-center my-1 xl:my-1.5">
+              <svg viewBox="0 0 36 36" class="w-full h-full transform -rotate-90">
+                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e2e8f0" stroke-width="3"/>
+                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831" fill="none" stroke="#6366f1" stroke-width="3.5" stroke-dasharray="60, 100"/>
+                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831" fill="none" stroke="#34d399" stroke-width="3.5" stroke-dasharray="20, 100" stroke-dashoffset="-60"/>
+                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831" fill="none" stroke="#f43f5e" stroke-width="3.5" stroke-dasharray="15, 100" stroke-dashoffset="-80"/>
+              </svg>
+              <!-- Center slot -->
+              <div class="absolute w-7 h-7 xl:w-8 xl:h-8 rounded-full bg-white flex items-center justify-center">
+                <span class="text-[9px] xl:text-[10px] font-black text-slate-700">75%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating Green Document Sheet Card -->
+      <div class="absolute bottom-6 right-8 xl:right-16 bg-white border border-slate-200/80 rounded-xl p-2 shadow-lg flex items-center justify-center w-9 h-9 xl:w-10 xl:h-10 border-l-4 border-l-emerald-500 z-10 animate-bounce" style="animation-duration: 4s;">
+        <mat-icon class="text-emerald-500 scale-90">description</mat-icon>
+      </div>
+
+      <!-- Floating Purple Verified Shield Card -->
+      <div class="absolute top-10 left-44 xl:left-52 bg-white border border-slate-200/80 rounded-xl p-2 shadow-lg flex items-center justify-center w-9 h-9 xl:w-10 xl:h-10 border-l-4 border-l-purple-500 z-10 animate-bounce" style="animation-duration: 5s;">
+        <mat-icon class="text-purple-500 scale-90">verified_user</mat-icon>
+      </div>
+
+      <!-- Floating Orange Active Bell Card -->
+      <div class="absolute top-24 right-4 xl:right-8 bg-white border border-slate-200/80 rounded-xl p-2 shadow-lg flex items-center justify-center w-9 h-9 xl:w-10 xl:h-10 border-l-4 border-l-orange-500 z-10 animate-bounce" style="animation-duration: 3.5s;">
+        <mat-icon class="text-orange-500 scale-90">notifications_active</mat-icon>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Right Side Panel (Forms & Action Elements) -->
+  <div class="w-full lg:w-[50%] h-full flex flex-col justify-between p-8 xl:p-12 bg-white relative overflow-y-auto">
+    
+    <!-- Top Bar with Language Selector -->
+    <div class="flex justify-end items-center z-20 shrink-0">
+      <div class="relative">
+        <button type="button" (click)="langMenuOpen.set(!langMenuOpen())" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition">
+          <mat-icon class="scale-75 text-slate-500">language</mat-icon>
+          <span>{{ activeLang() }}</span>
+          <mat-icon class="scale-75 text-slate-400">keyboard_arrow_down</mat-icon>
+        </button>
+        
+        <!-- Mock Language Dropdown -->
+        @if (langMenuOpen()) {
+          <div class="absolute right-0 mt-1 w-28 bg-white border border-slate-200 rounded-lg shadow-lg py-1 text-xs text-slate-700 z-50">
+            <button type="button" (click)="activeLang.set('English'); langMenuOpen.set(false)" class="w-full px-3 py-2 text-left hover:bg-slate-50">English</button>
+            <button type="button" (click)="activeLang.set('Español'); langMenuOpen.set(false)" class="w-full px-3 py-2 text-left hover:bg-slate-50">Español</button>
+            <button type="button" (click)="activeLang.set('Français'); langMenuOpen.set(false)" class="w-full px-3 py-2 text-left hover:bg-slate-50">Français</button>
+          </div>
+        }
+      </div>
+    </div>
+    
+    <!-- Main Center Form Container -->
+    <div class="max-w-md w-full mx-auto my-auto space-y-5 xl:space-y-6 pt-4 shrink-0">
+      
+      <!-- Welcome Titles -->
+      <div class="text-center md:text-left space-y-1">
+        <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Welcome back! 👋</h2>
+        <p class="text-sm text-slate-500">Sign in to continue to LifeCopilot</p>
+      </div>
+      
+      <!-- Tabs Layout -->
+      <div class="flex border-b border-slate-200">
+        <button type="button" (click)="activeTab.set('email')" [class]="activeTab() === 'email' ? 'border-b-2 border-indigo-600 text-indigo-600 font-bold' : 'text-slate-400 hover:text-slate-600 font-medium'" class="flex-1 pb-3 text-sm text-center transition">
+          Email
+        </button>
+        <button type="button" (click)="activeTab.set('phone')" [class]="activeTab() === 'phone' ? 'border-b-2 border-indigo-600 text-indigo-600 font-bold' : 'text-slate-400 hover:text-slate-600 font-medium'" class="flex-1 pb-3 text-sm text-center transition">
+          Phone
         </button>
       </div>
-
-      <div class="text-center mt-2">
-        <button type="button" (click)="onMockBypass()" class="text-xs text-indigo-400 hover:text-indigo-300 hover:underline bg-transparent border-0 cursor-pointer">
+      
+      @if (errorMessage()) {
+        <div class="bg-red-500/10 border border-red-500/20 text-red-700 text-xs p-4 rounded-lg flex items-center gap-2">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+      
+      @if (activeTab() === 'email') {
+        <!-- Login Form -->
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
+          <!-- Email Field -->
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">Email Address</span>
+            <mat-form-field appearance="outline" class="w-full text-slate-800">
+              <input matInput type="email" formControlName="email" placeholder="Enter your email" />
+              <mat-icon matPrefix class="text-slate-400 mr-2">email</mat-icon>
+              @if (loginForm.controls.email.invalid && loginForm.controls.email.touched) {
+                <mat-error>Please enter a valid email address</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          
+          <!-- Password Field -->
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">Password</span>
+            <mat-form-field appearance="outline" class="w-full">
+              <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" placeholder="Enter your password" />
+              <mat-icon matPrefix class="text-slate-400 mr-2">lock</mat-icon>
+              <button mat-icon-button matSuffix type="button" (click)="hidePassword.set(!hidePassword())" class="text-slate-400">
+                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (loginForm.controls.password.invalid && loginForm.controls.password.touched) {
+                <mat-error>Password is required</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          
+          <!-- Remember / Forgot Row -->
+          <div class="flex items-center justify-between text-xs pt-1">
+            <mat-checkbox color="primary" class="text-slate-500">Remember me</mat-checkbox>
+            <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500 hover:underline">Forgot password?</a>
+          </div>
+          
+          <!-- Submit Button -->
+          <button mat-flat-button color="primary" type="submit" [disabled]="loginForm.invalid || loading()" class="w-full py-6 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold text-sm shadow-md shadow-indigo-600/10 transition transform hover:-translate-y-0.5 active:translate-y-0">
+            @if (loading()) {
+              <div class="flex items-center justify-center gap-2">
+                <mat-spinner diameter="18" color="accent"></mat-spinner>
+                <span>Signing in...</span>
+              </div>
+            } @else {
+              <span>Sign in</span>
+            }
+          </button>
+        </form>
+      } @else {
+        <!-- Mock Phone Auth Placeholder -->
+        <div class="bg-indigo-50/50 border border-indigo-100 p-6 rounded-xl space-y-4 text-center">
+          <mat-icon class="text-indigo-500 scale-125">phone_android</mat-icon>
+          <div class="space-y-1">
+            <h4 class="text-sm font-bold text-slate-800">Phone Authentication</h4>
+            <p class="text-xs text-slate-500 leading-relaxed">SMS phone credentials authentication will be fully integrated during Phase 2 development.</p>
+          </div>
+        </div>
+      }
+      
+      <!-- Divider -->
+      <div class="relative flex items-center justify-center py-1">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-slate-200"></div>
+        </div>
+        <span class="relative px-3 bg-white text-xs text-slate-400 font-semibold uppercase tracking-wider">or continue with</span>
+      </div>
+      
+      <!-- Social SSO Logins -->
+      <div class="space-y-2">
+        <!-- Google -->
+        <button type="button" class="w-full flex items-center justify-center gap-3 py-3 rounded-lg border border-slate-200 hover:bg-slate-50 text-sm font-semibold text-slate-700 transition">
+          <svg class="w-5 h-5" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.85z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.85c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          <span>Continue with Google</span>
+        </button>
+        
+        <!-- Apple -->
+        <button type="button" class="w-full flex items-center justify-center gap-3 py-3 rounded-lg border border-slate-200 hover:bg-slate-50 text-sm font-semibold text-slate-700 transition">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.05 20.28c-.98.95-2.05 1.88-3.08 1.88-1.05 0-1.37-.62-2.58-.62-1.2 0-1.57.6-2.57.62-1.02.02-2.23-1-3.23-1.96-2.03-1.98-3.58-5.59-3.58-9.02 0-5.43 3.52-8.3 6.98-8.3 1.1 0 2.13.4 2.8.65.68.25 1.5.6 2.03.6.53 0 1.15-.3 1.7-.52.75-.32 1.95-.73 3.23-.73 3.4 0 5.17 2.45 5.75 4.12-2.73 1.62-2.28 5.18.45 6.27-1.12 2.78-2.95 5.58-4.97 7.03M15.54 3.7c.92-1.12 1.54-2.7 1.37-4.27-1.35.05-2.98.9-3.95 2.03-.83.95-1.55 2.53-1.35 4.07 1.5.12 3.02-.7 3.93-1.83"/>
+          </svg>
+          <span>Continue with Apple</span>
+        </button>
+        
+        <!-- Microsoft -->
+        <button type="button" class="w-full flex items-center justify-center gap-3 py-3 rounded-lg border border-slate-200 hover:bg-slate-50 text-sm font-semibold text-slate-700 transition">
+          <svg class="w-5 h-5" viewBox="0 0 23 23">
+            <path fill="#f35325" d="M0 0h11v11H0z"/>
+            <path fill="#80bb0a" d="M12 0h11v11H12z"/>
+            <path fill="#00a1f1" d="M0 12h11v11H0z"/>
+            <path fill="#ffb900" d="M12 12h11v11H12z"/>
+          </svg>
+          <span>Continue with Microsoft</span>
+        </button>
+      </div>
+      
+      <!-- Development bypass help link -->
+      <div class="text-center pt-2 border-t border-slate-100">
+        <button type="button" (click)="onMockBypass()" class="text-xs font-semibold text-indigo-500 hover:text-indigo-400 hover:underline bg-transparent border-0 cursor-pointer">
           [Local Dev Bypass] Direct Access to Dashboard
         </button>
       </div>
-
-      <div class="text-center mt-4">
-        <p class="text-sm text-slate-400">
-          Don't have an account? 
-          <a routerLink="/auth/register" class="font-medium text-indigo-400 hover:text-indigo-300 hover:underline ml-1">Create free vault</a>
-        </p>
-      </div>
-    </form>
+    </div>
+    
+    <!-- Footer Section -->
+    <div class="text-center text-xs text-slate-400 py-3 shrink-0">
+      Don't have an account? 
+      <a routerLink="/auth/register" class="font-bold text-indigo-600 hover:underline ml-1">Sign up</a>
+    </div>
   </div>
 </div>
