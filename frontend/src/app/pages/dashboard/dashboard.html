@@ -1,120 +1,397 @@
-<div class="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row">
-  <!-- Sidebar Navigation -->
-  <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between p-4">
-    <div>
-      <div class="px-2 py-4 mb-6">
-        <app-logo [size]="'md'" [theme]="'light'" [showTagline]="true"></app-logo>
-      </div>
+<div class="h-screen w-screen overflow-hidden flex bg-[#f8fafc] font-sans text-slate-800">
+  
+  <!-- Reusable Sidebar Navigation -->
+  <app-sidebar [activeItem]="'dashboard'"></app-sidebar>
 
-      <nav class="space-y-1">
-        <a routerLink="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 font-medium text-sm transition-all">
-          <mat-icon>dashboard</mat-icon>
-          <span>Dashboard</span>
-        </a>
-        <a routerLink="/profile" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 font-medium text-sm transition-all">
-          <mat-icon>person</mat-icon>
-          <span>Profile Settings</span>
-        </a>
-      </nav>
-    </div>
-
-    <!-- User Section footer -->
-    <div class="border-t border-slate-800 pt-4 mt-6">
-      <div class="flex items-center justify-between gap-2 px-2">
-        <div class="truncate">
-          <p class="text-xs text-slate-500">Active Profile</p>
-          <p class="text-sm font-semibold truncate text-slate-300">{{ userProfile()?.email }}</p>
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Main Content Area -->
-  <main class="flex-1 p-6 md:p-10 space-y-8 overflow-y-auto">
-    <!-- Reusable Top Header (Presentational component) -->
+  <!-- Right Column Content Container -->
+  <div class="flex-1 h-screen flex flex-col overflow-hidden">
+    
+    <!-- Top Header -->
     <app-header 
-      [email]="userProfile()?.email || ''" 
-      [firstName]="userProfile()?.first_name ?? null" 
+      [email]="userProfile()?.email || 'atul.sharma@gmail.com'" 
+      [firstName]="userProfile()?.first_name || 'Atul'" 
       (logout)="onLogout()">
     </app-header>
 
-    <!-- Phase 1 Feature Grid status -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Firebase Card -->
-      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between gap-4">
-        <div class="flex justify-between items-start">
-          <div class="w-12 h-12 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center border border-orange-500/10">
-            <mat-icon class="scale-110">vpn_key</mat-icon>
+    <!-- Content Scrollable Body -->
+    <div class="flex-1 overflow-y-auto bg-[#fafbfc] p-6 xl:p-8 space-y-6 xl:space-y-8">
+      
+      <!-- Greeting and Header row -->
+      <div class="space-y-1">
+        <h2 class="text-2xl xl:text-3xl font-extrabold text-slate-900 tracking-tight">Good Morning, Atul! 👋</h2>
+        <p class="text-sm text-slate-500 font-medium">Here's what's happening with your life today.</p>
+      </div>
+
+      <!-- Dashboard Columns Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 xl:gap-8 items-start">
+        
+        <!-- Left Side Dashboard Widgets (65% width) -->
+        <div class="lg:col-span-2 space-y-6 xl:space-y-8">
+          
+          <!-- Priority Actions Widget -->
+          <div class="bg-white border border-slate-200/50 rounded-2xl p-5 xl:p-6 shadow-sm space-y-4">
+            <div class="flex items-center gap-2">
+              <h3 class="text-base font-bold text-slate-800">Priority Actions</h3>
+              <span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-600 text-[10px] font-bold">
+                {{ priorityActions().length }}
+              </span>
+            </div>
+
+            <!-- List of actions -->
+            <div class="space-y-3">
+              @for (action of priorityActions(); track action.id) {
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center p-3.5 bg-slate-50/50 hover:bg-slate-50 border border-slate-100/70 rounded-xl gap-3 transition">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" 
+                      [ngClass]="{
+                        'bg-rose-50 border border-rose-100 text-rose-600': action.color === 'rose',
+                        'bg-amber-50 border border-amber-100 text-amber-600': action.color === 'amber',
+                        'bg-emerald-50 border border-emerald-100 text-emerald-600': action.color === 'emerald'
+                      }">
+                      <mat-icon class="scale-90">
+                        {{ action.color === 'rose' ? 'flight_takeoff' : action.color === 'amber' ? 'shield' : 'check_circle' }}
+                      </mat-icon>
+                    </div>
+                    <div>
+                      <h4 class="text-xs xl:text-sm font-bold text-slate-800">{{ action.title }}</h4>
+                      <p class="text-[11px] text-slate-400 mt-0.5">{{ action.detail }}</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-end gap-1 shrink-0">
+                    <button type="button" class="px-4.5 py-1.5 rounded-lg text-xs font-extrabold shadow-sm transition border select-none cursor-pointer"
+                      [ngClass]="{
+                        'bg-rose-50 border-rose-100 text-rose-600 hover:bg-rose-100': action.color === 'rose',
+                        'bg-amber-50 border-amber-100 text-amber-600 hover:bg-amber-100': action.color === 'amber',
+                        'bg-emerald-50 border-emerald-100 text-emerald-600 hover:bg-emerald-100': action.color === 'emerald'
+                      }">
+                      {{ action.buttonText }}
+                    </button>
+                    <button type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-100 transition">
+                      <mat-icon class="scale-75">keyboard_arrow_right</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+            
+            <div class="text-center pt-2">
+              <a href="#" class="text-xs font-bold text-indigo-600 hover:text-indigo-500 hover:underline">View all actions</a>
+            </div>
           </div>
-          <span class="bg-emerald-500/10 text-emerald-400 text-xs font-medium px-2 py-0.5 rounded-full border border-emerald-500/10">Active</span>
-        </div>
-        <div>
-          <h3 class="text-lg font-bold text-white">Firebase Authentication</h3>
-          <p class="text-sm text-slate-400 mt-1">Secure client authentication sessions and backend JWT validation enabled.</p>
-        </div>
-      </div>
 
-      <!-- PostgreSQL Card -->
-      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between gap-4">
-        <div class="flex justify-between items-start">
-          <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/10">
-            <mat-icon class="scale-110">storage</mat-icon>
+          <!-- Financial Snapshot Widget -->
+          <div class="bg-white border border-slate-200/50 rounded-2xl p-5 xl:p-6 shadow-sm space-y-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-base font-bold text-slate-800">Financial Snapshot</h3>
+              <a href="#" class="text-xs font-bold text-indigo-600 hover:underline">View Details</a>
+            </div>
+
+            <!-- Metric Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              @for (stat of financialSnapshot(); track stat.title) {
+                <div class="bg-slate-50/50 border border-slate-100 p-4 rounded-xl space-y-2 hover:shadow-md hover:bg-white transition duration-200">
+                  <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                    [ngClass]="{
+                      'bg-emerald-50 border border-emerald-100 text-emerald-600': stat.color === 'emerald',
+                      'bg-indigo-50 border border-indigo-100 text-indigo-600': stat.color === 'indigo',
+                      'bg-blue-50 border border-blue-100 text-blue-600': stat.color === 'blue',
+                      'bg-orange-50 border border-orange-100 text-orange-600': stat.color === 'orange'
+                    }">
+                    <mat-icon class="scale-75">{{ stat.icon }}</mat-icon>
+                  </div>
+                  <div>
+                    <span class="text-[9px] xl:text-[10px] font-bold text-slate-400 uppercase tracking-wider">{{ stat.title }}</span>
+                    <h4 class="text-sm xl:text-base font-black text-slate-800 mt-0.5">{{ stat.amount }}</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5" 
+                      [class.text-emerald-500]="stat.detail === 'Good' || stat.detail === 'After tax'">
+                      {{ stat.detail }}
+                    </p>
+                  </div>
+                </div>
+              }
+            </div>
           </div>
-          <span class="bg-emerald-500/10 text-emerald-400 text-xs font-medium px-2 py-0.5 rounded-full border border-emerald-500/10">Active</span>
-        </div>
-        <div>
-          <h3 class="text-lg font-bold text-white">PostgreSQL Database</h3>
-          <p class="text-sm text-slate-400 mt-1">User profile synchronization database triggers, indices, and tables running.</p>
-        </div>
-      </div>
 
-      <!-- Clean Architecture Card -->
-      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between gap-4">
-        <div class="flex justify-between items-start">
-          <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/10">
-            <mat-icon class="scale-110">architecture</mat-icon>
+          <!-- Documents Overview Widget -->
+          <div class="bg-white border border-slate-200/50 rounded-2xl p-5 xl:p-6 shadow-sm space-y-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-base font-bold text-slate-800">Documents Overview</h3>
+              <a href="#" class="text-xs font-bold text-indigo-600 hover:underline">View All</a>
+            </div>
+
+            <!-- Documents Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+              @for (doc of documents(); track doc.name; let idx = $index) {
+                <div class="bg-slate-50/30 border border-slate-100/80 p-3 rounded-2xl flex flex-col justify-between min-h-[128px] relative group hover:bg-slate-50 hover:shadow-md transition duration-200">
+                  
+                  <!-- Floating Delete Action -->
+                  <button type="button" (click)="onRemoveDoc(idx)" class="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-rose-50 border border-rose-100 text-rose-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer shadow-sm">
+                    <mat-icon class="scale-50">close</mat-icon>
+                  </button>
+
+                  <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mb-3"
+                    [ngClass]="{
+                      'bg-blue-50 border border-blue-100 text-blue-500': doc.color === 'blue',
+                      'bg-orange-50 border border-orange-100 text-orange-500': doc.color === 'orange',
+                      'bg-emerald-50 border border-emerald-100 text-emerald-500': doc.color === 'emerald',
+                      'bg-purple-50 border border-purple-100 text-purple-500': doc.color === 'purple',
+                      'bg-rose-50 border border-rose-100 text-rose-500': doc.color === 'rose'
+                    }">
+                    <mat-icon class="scale-75">{{ doc.icon }}</mat-icon>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-bold text-slate-800 truncate">{{ doc.name }}</h4>
+                    <p class="text-[9px] text-slate-400 mt-1 uppercase font-semibold truncate">{{ doc.status }}</p>
+                    <p class="text-[9px] text-slate-500 font-medium truncate mt-0.5">{{ doc.date }}</p>
+                  </div>
+                </div>
+              }
+
+              <!-- Add Document Card Dotted Trigger -->
+              <button type="button" (click)="isAddDocModalOpen.set(true)" class="border-2 border-dashed border-slate-200 hover:border-indigo-400 bg-white hover:bg-indigo-50/20 p-3 rounded-2xl flex flex-col items-center justify-center gap-2 min-h-[128px] transition cursor-pointer text-slate-500 hover:text-indigo-600 group">
+                <mat-icon class="scale-110 text-slate-400 group-hover:text-indigo-500 group-hover:scale-125 transition">add_circle_outline</mat-icon>
+                <span class="text-[10px] font-bold">Add Document</span>
+              </button>
+            </div>
           </div>
-          <span class="bg-emerald-500/10 text-emerald-400 text-xs font-medium px-2 py-0.5 rounded-full border border-emerald-500/10">Ready</span>
+
         </div>
-        <div>
-          <h3 class="text-lg font-bold text-white">Layered Architecture</h3>
-          <p class="text-sm text-slate-400 mt-1">FastAPI clean backend and custom layered Angular directories configured.</p>
+
+        <!-- Right Side Widgets Column (35% width) -->
+        <div class="space-y-6 xl:space-y-8">
+          
+          <!-- Life Score Card -->
+          <div class="bg-white border border-slate-200/50 rounded-2xl p-5 shadow-sm space-y-4">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-1.5 text-slate-700">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Life Score</span>
+                <mat-icon class="scale-50 text-slate-400 cursor-help">info_outline</mat-icon>
+              </div>
+              
+              <!-- Trend Arrow Green Badge -->
+              <div class="w-7 h-7 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-500 flex items-center justify-center shadow-sm">
+                <mat-icon class="scale-50">trending_up</mat-icon>
+              </div>
+            </div>
+
+            <div class="flex items-baseline gap-1">
+              <span class="text-3xl font-black text-indigo-600">82</span>
+              <span class="text-xs text-slate-400 font-bold">/ 100</span>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+              <div class="bg-indigo-600 h-full rounded-full transition-all duration-500" style="width: 82%"></div>
+            </div>
+          </div>
+
+          <!-- Upcoming reminders list widget -->
+          <div class="bg-white border border-slate-200/50 rounded-2xl p-5 shadow-sm space-y-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-sm font-bold text-slate-800">Upcoming</h3>
+              <button type="button" class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold text-indigo-600 hover:bg-indigo-50/50 rounded-lg transition border border-transparent select-none cursor-pointer">
+                <mat-icon class="scale-50">calendar_today</mat-icon>
+                <span>View Calendar</span>
+              </button>
+            </div>
+
+            <!-- Reminders row entries -->
+            <div class="space-y-3.5">
+              @for (reminder of upcomingReminders(); track reminder.title) {
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex gap-2.5">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                      [ngClass]="{
+                        'bg-purple-50 border border-purple-100 text-purple-500': reminder.color === 'purple',
+                        'bg-blue-50 border border-blue-100 text-blue-500': reminder.color === 'blue',
+                        'bg-rose-50 border border-rose-100 text-rose-500': reminder.color === 'rose',
+                        'bg-emerald-50 border border-emerald-100 text-emerald-500': reminder.color === 'emerald'
+                      }">
+                      <mat-icon class="scale-75">{{ reminder.icon }}</mat-icon>
+                    </div>
+                    <div>
+                      <h4 class="text-xs font-bold text-slate-800 leading-normal">{{ reminder.title }}</h4>
+                      <p class="text-[10px] text-slate-400 mt-0.5">{{ reminder.due }}</p>
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-bold shrink-0 mt-1"
+                    [ngClass]="{
+                      'text-purple-600': reminder.color === 'purple',
+                      'text-blue-600': reminder.color === 'blue',
+                      'text-rose-600': reminder.color === 'rose',
+                      'text-emerald-600': reminder.color === 'emerald'
+                    }">
+                    {{ reminder.remaining }}
+                  </span>
+                </div>
+              }
+            </div>
+
+            <div class="text-center pt-2 border-t border-slate-50">
+              <a href="#" class="text-xs font-bold text-indigo-600 hover:text-indigo-500 hover:underline">View all reminders</a>
+            </div>
+          </div>
+
+          <!-- AI Assistant Widget -->
+          <div class="bg-white border border-slate-200/50 rounded-2xl p-5 shadow-sm space-y-4">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-1.5">
+                <h3 class="text-sm font-bold text-slate-800">AI Assistant</h3>
+                <span class="px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 text-[8px] font-bold uppercase tracking-wider">
+                  Beta
+                </span>
+              </div>
+              <mat-icon class="text-indigo-500 scale-75">auto_awesome</mat-icon>
+            </div>
+
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+              Ask me anything about your documents, finance, taxes, or available benefits.
+            </p>
+
+            <!-- Scrollable Chat Bubble Area -->
+            <div class="bg-slate-50/50 border border-slate-100 rounded-xl p-3 h-32 overflow-y-auto space-y-2.5 text-xs">
+              @for (msg of chatMessages(); track msg.text) {
+                <div class="flex gap-2" [class.justify-end]="msg.sender === 'user'">
+                  @if (msg.sender === 'ai') {
+                    <div class="w-6 h-6 rounded-md bg-indigo-500 text-white flex items-center justify-center shrink-0 mt-0.5">
+                      <mat-icon class="scale-50">auto_awesome</mat-icon>
+                    </div>
+                  }
+                  <div class="p-2 rounded-xl max-w-[85%] whitespace-pre-line"
+                    [ngClass]="{
+                      'bg-white text-slate-700 border border-slate-100': msg.sender === 'ai',
+                      'bg-indigo-600 text-white': msg.sender === 'user'
+                    }">
+                    {{ msg.text }}
+                  </div>
+                </div>
+              }
+              @if (aiTyping()) {
+                <div class="flex gap-2 items-center text-slate-400">
+                  <div class="w-6 h-6 rounded-md bg-indigo-500 text-white flex items-center justify-center shrink-0">
+                    <mat-icon class="scale-50">auto_awesome</mat-icon>
+                  </div>
+                  <span class="animate-pulse">Thinking...</span>
+                </div>
+              }
+            </div>
+
+            <!-- Chat input box -->
+            <div class="relative flex items-center">
+              <input type="text" [(ngModel)]="chatInput" (keyup.enter)="onAsk(chatInput)" placeholder="Ask anything..." class="w-full pl-3 pr-10 py-2.5 bg-slate-50 border border-slate-200/80 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500/50 focus:bg-white transition" />
+              <button type="button" (click)="onAsk(chatInput)" class="absolute right-1.5 w-7.5 h-7.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center transition shadow-sm shadow-indigo-600/10 cursor-pointer">
+                <mat-icon class="scale-50">send</mat-icon>
+              </button>
+            </div>
+
+            <!-- Try asking shortcuts -->
+            <div class="space-y-1.5 pt-1">
+              <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Try asking</span>
+              
+              <button type="button" (click)="onAsk('What should I do this month?')" class="w-full flex justify-between items-center text-left px-3 py-2 bg-slate-50 hover:bg-indigo-50/30 border border-slate-100/70 hover:border-indigo-100 rounded-xl text-[10px] font-bold text-slate-600 hover:text-indigo-600 transition cursor-pointer select-none">
+                <span>What should I do this month?</span>
+                <mat-icon class="scale-50 text-slate-400">keyboard_arrow_right</mat-icon>
+              </button>
+              
+              <button type="button" (click)="onAsk('Can I save more tax this year?')" class="w-full flex justify-between items-center text-left px-3 py-2 bg-slate-50 hover:bg-indigo-50/30 border border-slate-100/70 hover:border-indigo-100 rounded-xl text-[10px] font-bold text-slate-600 hover:text-indigo-600 transition cursor-pointer select-none">
+                <span>Can I save more tax this year?</span>
+                <mat-icon class="scale-50 text-slate-400">keyboard_arrow_right</mat-icon>
+              </button>
+              
+              <button type="button" (click)="onAsk('Am I eligible for any schemes?')" class="w-full flex justify-between items-center text-left px-3 py-2 bg-slate-50 hover:bg-indigo-50/30 border border-slate-100/70 hover:border-indigo-100 rounded-xl text-[10px] font-bold text-slate-600 hover:text-indigo-600 transition cursor-pointer select-none">
+                <span>Am I eligible for any schemes?</span>
+                <mat-icon class="scale-50 text-slate-400">keyboard_arrow_right</mat-icon>
+              </button>
+            </div>
+
+          </div>
+
         </div>
-      </div>
-    </section>
 
-    <!-- Phase 2 Future Roadmap Notice using presentational components -->
-    <section class="bg-slate-900 border border-slate-800 p-8 rounded-2xl space-y-6">
-      <div>
-        <h3 class="text-xl font-bold text-white">Planned Features (Phase 2 Roadmap)</h3>
-        <p class="text-slate-400 text-sm mt-1">The following elements will be wired up during Phase 2 development.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <app-roadmap-card 
-          title="AI Personal Recommendation" 
-          icon="psychology" 
-          description="Contextual suggestions and insights generated via LLM interfaces.">
-        </app-roadmap-card>
+    </div>
 
-        <app-roadmap-card 
-          title="Document Upload & Extraction" 
-          icon="folder_zip" 
-          description="Secure blob storage and OCR data pipeline extraction for vital records.">
-        </app-roadmap-card>
+  </div>
 
-        <app-roadmap-card 
-          title="Financial Profile Sync" 
-          icon="account_balance_wallet" 
-          description="Aggregate financial transactions, savings accounts, and net-worth trackers.">
-        </app-roadmap-card>
+  <!-- Custom Document Modal Overlay -->
+  @if (isAddDocModalOpen()) {
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-md w-full p-6 space-y-4">
+        
+        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+          <h3 class="text-base font-extrabold text-slate-900">Add New Document</h3>
+          <button type="button" (click)="isAddDocModalOpen.set(false)" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-100 transition cursor-pointer">
+            <mat-icon class="scale-75">close</mat-icon>
+          </button>
+        </div>
 
-        <app-roadmap-card 
-          title="Tax & Investments" 
-          icon="calculate" 
-          description="Automatic tax estimator sheets and stock/bond equity portfolio updates.">
-        </app-roadmap-card>
+        <form (ngSubmit)="onAddDocSubmit()" class="space-y-4">
+          <!-- Name input -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Document Name</label>
+            <input type="text" [(ngModel)]="newDocName" name="docName" placeholder="e.g. Aadhar Card, Health Card" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition" required />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <!-- Status selector -->
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Status</label>
+              <select [(ngModel)]="newDocStatus" name="docStatus" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition bg-white">
+                <option value="Verified">Verified</option>
+                <option value="Pending">Pending</option>
+                <option value="Expires soon">Expires soon</option>
+              </select>
+            </div>
+
+            <!-- Expiry date input -->
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Expiry / Detail</label>
+              <input type="text" [(ngModel)]="newDocDate" name="docDate" placeholder="e.g. 12 Jan 2026, Valid" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition" />
+            </div>
+          </div>
+
+          <!-- Color theme picker -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Card Theme Color</label>
+            <div class="flex gap-3">
+              @for (color of ['blue', 'orange', 'emerald', 'purple', 'rose']; track color) {
+                <button type="button" (click)="newDocColor = color" [class.ring-4]="newDocColor === color"
+                  [ngClass]="{
+                    'bg-blue-500 ring-blue-200': color === 'blue',
+                    'bg-orange-500 ring-orange-200': color === 'orange',
+                    'bg-emerald-500 ring-emerald-200': color === 'emerald',
+                    'bg-purple-500 ring-purple-200': color === 'purple',
+                    'bg-rose-500 ring-rose-200': color === 'rose'
+                  }" class="w-7 h-7 rounded-full transition cursor-pointer">
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Icon picker -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Select Icon</label>
+            <div class="flex gap-3 text-slate-500">
+              @for (icon of ['credit_card', 'flight_takeoff', 'badge', 'directions_car', 'favorite', 'description']; track icon) {
+                <button type="button" (click)="newDocIcon = icon" [class.bg-indigo-50]="newDocIcon === icon" [class.text-indigo-600]="newDocIcon === icon" class="w-10 h-10 border border-slate-100 rounded-xl flex items-center justify-center hover:bg-slate-50 transition cursor-pointer">
+                  <mat-icon class="scale-75">{{ icon }}</mat-icon>
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex justify-end gap-2.5 pt-3 border-t border-slate-100">
+            <button type="button" (click)="isAddDocModalOpen.set(false)" class="px-4.5 py-2 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 hover:bg-slate-50 transition cursor-pointer select-none">
+              Cancel
+            </button>
+            <button type="submit" [disabled]="!newDocName.trim()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-600/10 transition cursor-pointer select-none">
+              Add Document
+            </button>
+          </div>
+        </form>
       </div>
-    </section>
-  </main>
+    </div>
+  }
 </div>

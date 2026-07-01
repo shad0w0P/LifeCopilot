@@ -1,0 +1,117 @@
+<!-- Mobile Sidebar Backdrop Overlay -->
+@if (isMobileOpen()) {
+  <div (click)="layoutService.closeMobileSidebar()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-30 md:hidden"></div>
+}
+
+<aside 
+  [class]="isCollapsed() ? 'w-20 p-4' : 'w-64 p-5'"
+  [class.translate-x-0]="isMobileOpen()"
+  class="fixed inset-y-0 left-0 z-40 flex flex-col justify-between bg-white border-r border-slate-100 h-full shrink-0 transition-all duration-300 transform -translate-x-full md:relative md:translate-x-0">
+  
+  <div>
+    <!-- Brand Header -->
+    <div class="flex items-center justify-between pb-6 border-b border-slate-100/50" [class.justify-center]="isCollapsed()">
+      <app-logo [size]="'md'" [theme]="'dark'" [showText]="!isCollapsed()"></app-logo>
+      
+      @if (!isCollapsed()) {
+        <button type="button" (click)="layoutService.toggleSidebar()" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition cursor-pointer">
+          <mat-icon class="scale-75">keyboard_double_arrow_left</mat-icon>
+        </button>
+      } @else {
+        <button type="button" (click)="layoutService.toggleSidebar()" class="hidden md:flex w-8 h-8 rounded-lg items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition mt-1 cursor-pointer">
+          <mat-icon class="scale-75">keyboard_arrow_right</mat-icon>
+        </button>
+      }
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="space-y-1.5 mt-6">
+      <a routerLink="/dashboard" 
+        [class]="activeItem === 'dashboard' ? 'flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-50/60 border-l-4 border-indigo-600 text-indigo-600 font-bold transition select-none' : 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition select-none'"
+        [class.justify-center]="isCollapsed()" [class.px-0]="isCollapsed()" [class.border-l-4]="activeItem === 'dashboard' && !isCollapsed()" [class.bg-indigo-50]="activeItem === 'dashboard' && isCollapsed()"
+        title="Dashboard">
+        <mat-icon class="scale-90 shrink-0">grid_view</mat-icon>
+        @if (!isCollapsed()) {
+          <span class="text-sm">Dashboard</span>
+        }
+      </a>
+      
+      <a routerLink="/profile" 
+        [class]="activeItem === 'profile' ? 'flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-50/60 border-l-4 border-indigo-600 text-indigo-600 font-bold transition select-none' : 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition select-none'"
+        [class.justify-center]="isCollapsed()" [class.px-0]="isCollapsed()" [class.border-l-4]="activeItem === 'profile' && !isCollapsed()" [class.bg-indigo-50]="activeItem === 'profile' && isCollapsed()"
+        title="Profile">
+        <mat-icon class="scale-90 shrink-0">person</mat-icon>
+        @if (!isCollapsed()) {
+          <span class="text-sm">Profile</span>
+        }
+      </a>
+      
+      <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-400 hover:text-slate-600 cursor-not-allowed transition select-none"
+        [class.justify-center]="isCollapsed()" [class.px-0]="isCollapsed()" title="Documents">
+        <mat-icon class="scale-90 shrink-0">folder_open</mat-icon>
+        @if (!isCollapsed()) {
+          <span class="text-sm">Documents</span>
+        }
+      </a>
+      
+      <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-400 hover:text-slate-600 cursor-not-allowed transition select-none"
+        [class.justify-center]="isCollapsed()" [class.px-0]="isCollapsed()" title="Finance">
+        <mat-icon class="scale-90 shrink-0">payments</mat-icon>
+        @if (!isCollapsed()) {
+          <span class="text-sm">Finance</span>
+        }
+      </a>
+      
+      <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-400 hover:text-slate-600 cursor-not-allowed transition select-none"
+        [class.justify-center]="isCollapsed()" [class.px-0]="isCollapsed()" title="Benefits">
+        <mat-icon class="scale-90 shrink-0">volunteer_activism</mat-icon>
+        @if (!isCollapsed()) {
+          <span class="text-sm">Benefits</span>
+        }
+      </a>
+      
+      <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-400 hover:text-slate-600 cursor-not-allowed transition select-none"
+        [class.justify-center]="isCollapsed()" [class.px-0]="isCollapsed()" title="Reminders">
+        <mat-icon class="scale-90 shrink-0">notifications_active</mat-icon>
+        @if (!isCollapsed()) {
+          <span class="text-sm">Reminders</span>
+        }
+      </a>
+      
+      <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-400 hover:text-slate-600 cursor-not-allowed transition select-none"
+        [class.justify-center]="isCollapsed()" [class.px-0]="isCollapsed()" title="AI Assistant">
+        <mat-icon class="scale-90 shrink-0">auto_awesome</mat-icon>
+        @if (!isCollapsed()) {
+          <span class="text-sm">AI Assistant</span>
+        }
+      </a>
+      
+      <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-400 hover:text-slate-600 cursor-not-allowed transition select-none"
+        [class.justify-center]="isCollapsed()" [class.px-0]="isCollapsed()" title="Settings">
+        <mat-icon class="scale-90 shrink-0">settings</mat-icon>
+        @if (!isCollapsed()) {
+          <span class="text-sm">Settings</span>
+        }
+      </a>
+    </nav>
+  </div>
+
+  <!-- Sidebar User Footer -->
+  <div class="flex items-center bg-slate-50 rounded-2xl border border-slate-100" 
+    [class.p-2]="!isCollapsed()" [class.p-1.5]="isCollapsed()" [class.justify-center]="isCollapsed()">
+    <div class="flex items-center gap-2.5 min-w-0" [class.justify-center]="isCollapsed()">
+      <div class="w-9 h-9 rounded-xl overflow-hidden bg-slate-200 shrink-0">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&auto=format&fit=crop" alt="User Profile" class="w-full h-full object-cover" />
+      </div>
+      @if (!isCollapsed()) {
+        <div class="min-w-0 flex-1">
+          <p class="text-xs font-bold text-slate-800 truncate">{{ userProfile()?.first_name || 'Atul Sharma' }}</p>
+          <p class="text-[9px] text-slate-400 truncate">{{ userProfile()?.email || 'atul.sharma@gmail.com' }}</p>
+        </div>
+        <button type="button" class="text-slate-400 hover:text-slate-600 shrink-0">
+          <mat-icon class="scale-75">keyboard_arrow_down</mat-icon>
+        </button>
+      }
+    </div>
+  </div>
+</aside>

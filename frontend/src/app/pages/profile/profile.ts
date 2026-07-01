@@ -12,7 +12,8 @@ import { UserProfile } from '../../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { API_CONFIG } from '../../core/api.config';
 import { firstValueFrom } from 'rxjs';
-import { LogoComponent } from '../../components/logo/logo';
+import { SidebarComponent } from '../../components/sidebar/sidebar';
+import { HeaderComponent } from '../../components/header/header';
 
 @Component({
   selector: 'app-profile',
@@ -26,7 +27,8 @@ import { LogoComponent } from '../../components/logo/logo';
     MatInputModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    LogoComponent
+    HeaderComponent,
+    SidebarComponent
   ],
   templateUrl: './profile.html'
 })
@@ -34,6 +36,12 @@ export default class ProfileComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private http = inject(HttpClient);
+  private router = inject(Router);
+
+  async onLogout(): Promise<void> {
+    await this.authService.logout();
+    this.router.navigate(['/auth/login']);
+  }
 
   userProfile = this.authService.userProfile;
   saving = signal<boolean>(false);

@@ -1,109 +1,99 @@
-<div class="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row">
-  <!-- Sidebar Navigation -->
-  <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between p-4">
-    <div>
-      <div class="px-2 py-4 mb-6">
-        <app-logo [size]="'md'" [theme]="'light'" [showTagline]="true"></app-logo>
+<div class="h-screen w-screen overflow-hidden flex bg-[#f8fafc] font-sans text-slate-800">
+  
+  <!-- Reusable Sidebar Navigation -->
+  <app-sidebar [activeItem]="'profile'"></app-sidebar>
+
+  <!-- Right Column Content Container -->
+  <div class="flex-1 h-screen flex flex-col overflow-hidden">
+    
+    <!-- Top Header -->
+    <app-header 
+      [email]="userProfile()?.email || 'atul.sharma@gmail.com'" 
+      [firstName]="userProfile()?.first_name || 'Atul'" 
+      (logout)="onLogout()">
+    </app-header>
+
+    <!-- Content Scrollable Body -->
+    <div class="flex-1 overflow-y-auto bg-[#fafbfc] p-6 xl:p-8 space-y-6 xl:space-y-8">
+      
+      <!-- Greeting and Header row -->
+      <div class="space-y-1">
+        <h2 class="text-2xl xl:text-3xl font-extrabold text-slate-900 tracking-tight">Profile Settings</h2>
+        <p class="text-sm text-slate-500 font-medium">Manage your secure personal profile details.</p>
       </div>
 
-      <nav class="space-y-1">
-        <a routerLink="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 font-medium text-sm transition-all">
-          <mat-icon>dashboard</mat-icon>
-          <span>Dashboard</span>
-        </a>
-        <a routerLink="/profile" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 font-medium text-sm transition-all">
-          <mat-icon>person</mat-icon>
-          <span>Profile Settings</span>
-        </a>
-      </nav>
-    </div>
-
-    <!-- User Section footer -->
-    <div class="border-t border-slate-800 pt-4 mt-6">
-      <div class="flex items-center gap-2 px-2">
-        <div class="truncate">
-          <p class="text-xs text-slate-500">Active Profile</p>
-          <p class="text-sm font-semibold truncate text-slate-300">{{ userProfile()?.email }}</p>
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Main Content Area -->
-  <main class="flex-1 p-6 md:p-10 space-y-8 overflow-y-auto">
-    <!-- Header -->
-    <header>
-      <h2 class="text-3xl font-bold tracking-tight text-white">Profile Settings</h2>
-      <p class="text-slate-400 text-sm mt-1">Manage your account profile details stored in the secure PostgreSQL database.</p>
-    </header>
-
-    <!-- Settings Card -->
-    <section class="max-w-2xl bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl">
-      @if (successMessage()) {
-        <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-200 text-sm p-4 rounded-lg flex items-center gap-2">
-          <mat-icon>check_circle_outline</mat-icon>
-          <span>{{ successMessage() }}</span>
-        </div>
-      }
-
-      @if (errorMessage()) {
-        <div class="bg-red-500/10 border border-red-500/20 text-red-200 text-sm p-4 rounded-lg flex items-center gap-2">
-          <mat-icon>error_outline</mat-icon>
-          <span>{{ errorMessage() }}</span>
-        </div>
-      }
-
-      <!-- System profile values -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-950/40 p-4 rounded-xl border border-slate-800/80">
-        <div>
-          <span class="text-xs text-slate-500 uppercase font-semibold">Firebase Authentication UID</span>
-          <p class="text-sm font-mono text-indigo-300 mt-1 select-all truncate" title="{{ userProfile()?.firebase_uid }}">
-            {{ userProfile()?.firebase_uid }}
-          </p>
-        </div>
-        <div>
-          <span class="text-xs text-slate-500 uppercase font-semibold">Email Address</span>
-          <p class="text-sm font-semibold text-slate-300 mt-1 select-all">
-            {{ userProfile()?.email }}
-          </p>
-        </div>
-      </div>
-
-      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6 pt-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <mat-form-field appearance="outline" class="w-full">
-              <mat-label class="text-slate-400">First Name</mat-label>
-              <input matInput formControlName="first_name" placeholder="John" class="text-white" />
-              <mat-icon matSuffix class="text-slate-400">badge</mat-icon>
-            </mat-form-field>
+      <!-- Settings Panel Content Area -->
+      <section class="max-w-2xl bg-white border border-slate-200/50 rounded-2xl p-6 xl:p-8 space-y-6 shadow-sm">
+        @if (successMessage()) {
+          <div class="bg-emerald-50/50 border border-emerald-200/60 text-emerald-700 text-xs p-4 rounded-xl flex items-center gap-2">
+            <mat-icon>check_circle_outline</mat-icon>
+            <span>{{ successMessage() }}</span>
           </div>
+        }
 
+        @if (errorMessage()) {
+          <div class="bg-red-50/50 border border-red-200/60 text-red-700 text-xs p-4 rounded-xl flex items-center gap-2">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+
+        <!-- System Authentication values -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 border border-slate-100 p-4 rounded-xl">
           <div>
-            <mat-form-field appearance="outline" class="w-full">
-              <mat-label class="text-slate-400">Last Name</mat-label>
-              <input matInput formControlName="last_name" placeholder="Doe" class="text-white" />
-              <mat-icon matSuffix class="text-slate-400">badge</mat-icon>
-            </mat-form-field>
+            <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Firebase Account UID</span>
+            <p class="text-xs font-mono text-indigo-600 mt-1 select-all truncate" title="{{ userProfile()?.firebase_uid }}">
+              {{ userProfile()?.firebase_uid }}
+            </p>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Linked Email Address</span>
+            <p class="text-xs font-bold text-slate-700 mt-1 select-all">
+              {{ userProfile()?.email }}
+            </p>
           </div>
         </div>
 
-        <div class="flex justify-end gap-3 pt-2">
-          <a routerLink="/dashboard" mat-button class="text-slate-400 hover:text-slate-200">
-            Cancel
-          </a>
-          <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid || saving()" class="px-6 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold shadow-lg shadow-indigo-600/20 text-white">
-            @if (saving()) {
-              <div class="flex items-center gap-2">
-                <mat-spinner diameter="18" color="accent"></mat-spinner>
-                <span>Saving Changes...</span>
-              </div>
-            } @else {
-              <span>Save Changes</span>
-            }
-          </button>
-        </div>
-      </form>
-    </section>
-  </main>
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-4 pt-2">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- First Name Field -->
+            <div class="space-y-1">
+              <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">First Name</span>
+              <mat-form-field appearance="outline" class="w-full text-slate-800">
+                <input matInput formControlName="first_name" placeholder="John" />
+                <mat-icon matSuffix class="text-slate-400">person</mat-icon>
+              </mat-form-field>
+            </div>
+
+            <!-- Last Name Field -->
+            <div class="space-y-1">
+              <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">Last Name</span>
+              <mat-form-field appearance="outline" class="w-full text-slate-800">
+                <input matInput formControlName="last_name" placeholder="Doe" />
+                <mat-icon matSuffix class="text-slate-400">person</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex justify-end gap-2.5 pt-4 border-t border-slate-100">
+            <a routerLink="/dashboard" class="px-5 py-2.5 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 hover:bg-slate-50 transition cursor-pointer select-none text-center">
+              Cancel
+            </a>
+            <button type="submit" [disabled]="profileForm.invalid || saving()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-600/10 transition cursor-pointer select-none">
+              @if (saving()) {
+                <div class="flex items-center gap-2">
+                  <mat-spinner diameter="16" color="accent"></mat-spinner>
+                  <span>Saving...</span>
+                </div>
+              } @else {
+                <span>Save Changes</span>
+              }
+            </button>
+          </div>
+        </form>
+      </section>
+
+    </div>
+  </div>
 </div>
