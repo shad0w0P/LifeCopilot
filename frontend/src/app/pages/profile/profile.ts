@@ -14,6 +14,7 @@ import { API_CONFIG } from '../../core/api.config';
 import { firstValueFrom } from 'rxjs';
 import { SidebarComponent } from '../../components/sidebar/sidebar';
 import { HeaderComponent } from '../../components/header/header';
+import { AiChatComponent } from '../../components/ai-chat/ai-chat';
 
 @Component({
   selector: 'app-profile',
@@ -28,7 +29,8 @@ import { HeaderComponent } from '../../components/header/header';
     MatIconModule,
     MatProgressSpinnerModule,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    AiChatComponent
   ],
   templateUrl: './profile.html'
 })

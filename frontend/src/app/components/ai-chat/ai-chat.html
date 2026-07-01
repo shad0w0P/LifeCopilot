@@ -1,0 +1,94 @@
+<div class="fixed bottom-0 right-8 z-50 font-sans transition-all duration-300 transform select-none"
+     [class.w-80]="isOpen()" [class.h-[420px]]="isOpen()"
+     [class.w-72]="!isOpen()" [class.h-12]="!isOpen()">
+
+  <!-- Main Chat Window Drawer -->
+  <div class="w-full h-full bg-white border border-slate-200/80 rounded-t-2xl shadow-2xl flex flex-col overflow-hidden border-b-0">
+    
+    <!-- Top Header Bar (Click to toggle drawer state) -->
+    <div (click)="toggleOpen()" class="flex items-center justify-between px-4 py-3 bg-white border-b border-slate-100 shrink-0 select-none cursor-pointer hover:bg-slate-50 transition duration-150">
+      <div class="flex items-center gap-2">
+        <!-- Pulse active online indicator -->
+        <span class="relative flex h-2.5 w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-600"></span>
+        </span>
+        
+        <span class="text-xs font-bold text-slate-800">AI Assistant</span>
+        <span class="px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 text-[8px] font-black uppercase tracking-wider scale-90">
+          Beta
+        </span>
+      </div>
+
+      <div class="flex items-center gap-1 text-slate-400">
+        @if (isOpen()) {
+          <button type="button" class="w-6 h-6 rounded-lg flex items-center justify-center hover:bg-slate-100 text-slate-500 transition">
+            <mat-icon class="scale-75">keyboard_arrow_down</mat-icon>
+          </button>
+        } @else {
+          <button type="button" class="w-6 h-6 rounded-lg flex items-center justify-center hover:bg-slate-100 text-slate-500 transition">
+            <mat-icon class="scale-75">keyboard_arrow_up</mat-icon>
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (isOpen()) {
+      <!-- Chat message scroll list -->
+      <div class="flex-1 overflow-y-auto p-4 bg-slate-50/50 space-y-3 scrollbar-thin">
+        @for (msg of chatMessages(); track msg.text) {
+          <div class="flex gap-2.5 text-xs" [class.justify-end]="msg.sender === 'user'">
+            @if (msg.sender === 'ai') {
+              <div class="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                <mat-icon class="scale-50">auto_awesome</mat-icon>
+              </div>
+            }
+            <div class="p-2.5 rounded-2xl max-w-[80%] whitespace-pre-line leading-relaxed shadow-xs"
+              [ngClass]="{
+                'bg-white text-slate-700 border border-slate-100/80': msg.sender === 'ai',
+                'bg-indigo-600 text-white': msg.sender === 'user'
+              }">
+              {{ msg.text }}
+            </div>
+          </div>
+        }
+        @if (aiTyping()) {
+          <div class="flex gap-2.5 items-center text-xs text-slate-400">
+            <div class="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0">
+              <mat-icon class="scale-50">auto_awesome</mat-icon>
+            </div>
+            <div class="flex items-center gap-1 bg-white border border-slate-100/80 p-2.5 rounded-2xl">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style="animation-delay: 0.1s"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style="animation-delay: 0.2s"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style="animation-delay: 0.3s"></span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Try asking shortcuts overlay -->
+      <div class="px-4 py-2 bg-white border-t border-slate-100 space-y-1.5 shrink-0">
+        <span class="text-[8px] font-bold text-slate-400 uppercase tracking-wider block">Try asking</span>
+        <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+          <button type="button" (click)="onAsk('What should I do this month?')" class="px-2.5 py-1 bg-slate-50 hover:bg-indigo-50/50 border border-slate-100 hover:border-indigo-200 rounded-lg text-[9px] font-bold text-slate-600 hover:text-indigo-600 transition shrink-0 cursor-pointer select-none">
+            Priority Tasks
+          </button>
+          <button type="button" (click)="onAsk('Can I save more tax this year?')" class="px-2.5 py-1 bg-slate-50 hover:bg-indigo-50/50 border border-slate-100 hover:border-indigo-200 rounded-lg text-[9px] font-bold text-slate-600 hover:text-indigo-600 transition shrink-0 cursor-pointer select-none">
+            Save Taxes
+          </button>
+          <button type="button" (click)="onAsk('Am I eligible for any schemes?')" class="px-2.5 py-1 bg-slate-50 hover:bg-indigo-50/50 border border-slate-100 hover:border-indigo-200 rounded-lg text-[9px] font-bold text-slate-600 hover:text-indigo-600 transition shrink-0 cursor-pointer select-none">
+            Gov Benefits
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer text input block -->
+      <div class="p-3 bg-white border-t border-slate-100 flex gap-2 items-center shrink-0">
+        <input type="text" [(ngModel)]="chatInput" (keyup.enter)="onAsk(chatInput)" placeholder="Ask anything..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-200/80 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500/50 focus:bg-white transition" />
+        <button type="button" (click)="onAsk(chatInput)" class="w-8 h-8 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center transition shadow-sm shrink-0 cursor-pointer">
+          <mat-icon class="scale-50">send</mat-icon>
+        </button>
+      </div>
+    }
+  </div>
+</div>
