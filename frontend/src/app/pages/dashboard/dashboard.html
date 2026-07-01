@@ -1,0 +1,126 @@
+<div class="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row">
+  <!-- Sidebar Navigation -->
+  <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between p-4">
+    <div>
+      <div class="flex items-center gap-3 px-2 py-4 mb-6">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-pink-500 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/20">
+          <mat-icon>fingerprint</mat-icon>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">LifeCopilot</h1>
+          <span class="text-xs text-slate-500">Phase 1 Foundation</span>
+        </div>
+      </div>
+
+      <nav class="space-y-1">
+        <a routerLink="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 font-medium text-sm transition-all">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
+        </a>
+        <a routerLink="/profile" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 font-medium text-sm transition-all">
+          <mat-icon>person</mat-icon>
+          <span>Profile Settings</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- User Section footer -->
+    <div class="border-t border-slate-800 pt-4 mt-6">
+      <div class="flex items-center justify-between gap-2 px-2">
+        <div class="truncate">
+          <p class="text-xs text-slate-500">Active Profile</p>
+          <p class="text-sm font-semibold truncate text-slate-300">{{ userProfile()?.email }}</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 p-6 md:p-10 space-y-8 overflow-y-auto">
+    <!-- Reusable Top Header (Presentational component) -->
+    <app-header 
+      [email]="userProfile()?.email || ''" 
+      [firstName]="userProfile()?.first_name ?? null" 
+      (logout)="onLogout()">
+    </app-header>
+
+    <!-- Phase 1 Feature Grid status -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Firebase Card -->
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between gap-4">
+        <div class="flex justify-between items-start">
+          <div class="w-12 h-12 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center border border-orange-500/10">
+            <mat-icon class="scale-110">vpn_key</mat-icon>
+          </div>
+          <span class="bg-emerald-500/10 text-emerald-400 text-xs font-medium px-2 py-0.5 rounded-full border border-emerald-500/10">Active</span>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-white">Firebase Authentication</h3>
+          <p class="text-sm text-slate-400 mt-1">Secure client authentication sessions and backend JWT validation enabled.</p>
+        </div>
+      </div>
+
+      <!-- PostgreSQL Card -->
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between gap-4">
+        <div class="flex justify-between items-start">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/10">
+            <mat-icon class="scale-110">storage</mat-icon>
+          </div>
+          <span class="bg-emerald-500/10 text-emerald-400 text-xs font-medium px-2 py-0.5 rounded-full border border-emerald-500/10">Active</span>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-white">PostgreSQL Database</h3>
+          <p class="text-sm text-slate-400 mt-1">User profile synchronization database triggers, indices, and tables running.</p>
+        </div>
+      </div>
+
+      <!-- Clean Architecture Card -->
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between gap-4">
+        <div class="flex justify-between items-start">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/10">
+            <mat-icon class="scale-110">architecture</mat-icon>
+          </div>
+          <span class="bg-emerald-500/10 text-emerald-400 text-xs font-medium px-2 py-0.5 rounded-full border border-emerald-500/10">Ready</span>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-white">Layered Architecture</h3>
+          <p class="text-sm text-slate-400 mt-1">FastAPI clean backend and custom layered Angular directories configured.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Phase 2 Future Roadmap Notice using presentational components -->
+    <section class="bg-slate-900 border border-slate-800 p-8 rounded-2xl space-y-6">
+      <div>
+        <h3 class="text-xl font-bold text-white">Planned Features (Phase 2 Roadmap)</h3>
+        <p class="text-slate-400 text-sm mt-1">The following elements will be wired up during Phase 2 development.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <app-roadmap-card 
+          title="AI Personal Recommendation" 
+          icon="psychology" 
+          description="Contextual suggestions and insights generated via LLM interfaces.">
+        </app-roadmap-card>
+
+        <app-roadmap-card 
+          title="Document Upload & Extraction" 
+          icon="folder_zip" 
+          description="Secure blob storage and OCR data pipeline extraction for vital records.">
+        </app-roadmap-card>
+
+        <app-roadmap-card 
+          title="Financial Profile Sync" 
+          icon="account_balance_wallet" 
+          description="Aggregate financial transactions, savings accounts, and net-worth trackers.">
+        </app-roadmap-card>
+
+        <app-roadmap-card 
+          title="Tax & Investments" 
+          icon="calculate" 
+          description="Automatic tax estimator sheets and stock/bond equity portfolio updates.">
+        </app-roadmap-card>
+      </div>
+    </section>
+  </main>
+</div>

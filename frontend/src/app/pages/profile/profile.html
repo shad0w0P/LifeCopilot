@@ -1,0 +1,115 @@
+<div class="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row">
+  <!-- Sidebar Navigation -->
+  <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between p-4">
+    <div>
+      <div class="flex items-center gap-3 px-2 py-4 mb-6">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-pink-500 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/20">
+          <mat-icon>fingerprint</mat-icon>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">LifeCopilot</h1>
+          <span class="text-xs text-slate-500">Phase 1 Foundation</span>
+        </div>
+      </div>
+
+      <nav class="space-y-1">
+        <a routerLink="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 font-medium text-sm transition-all">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
+        </a>
+        <a routerLink="/profile" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 font-medium text-sm transition-all">
+          <mat-icon>person</mat-icon>
+          <span>Profile Settings</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- User Section footer -->
+    <div class="border-t border-slate-800 pt-4 mt-6">
+      <div class="flex items-center gap-2 px-2">
+        <div class="truncate">
+          <p class="text-xs text-slate-500">Active Profile</p>
+          <p class="text-sm font-semibold truncate text-slate-300">{{ userProfile()?.email }}</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 p-6 md:p-10 space-y-8 overflow-y-auto">
+    <!-- Header -->
+    <header>
+      <h2 class="text-3xl font-bold tracking-tight text-white">Profile Settings</h2>
+      <p class="text-slate-400 text-sm mt-1">Manage your account profile details stored in the secure PostgreSQL database.</p>
+    </header>
+
+    <!-- Settings Card -->
+    <section class="max-w-2xl bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl">
+      @if (successMessage()) {
+        <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-200 text-sm p-4 rounded-lg flex items-center gap-2">
+          <mat-icon>check_circle_outline</mat-icon>
+          <span>{{ successMessage() }}</span>
+        </div>
+      }
+
+      @if (errorMessage()) {
+        <div class="bg-red-500/10 border border-red-500/20 text-red-200 text-sm p-4 rounded-lg flex items-center gap-2">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <!-- System profile values -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-950/40 p-4 rounded-xl border border-slate-800/80">
+        <div>
+          <span class="text-xs text-slate-500 uppercase font-semibold">Firebase Authentication UID</span>
+          <p class="text-sm font-mono text-indigo-300 mt-1 select-all truncate" title="{{ userProfile()?.firebase_uid }}">
+            {{ userProfile()?.firebase_uid }}
+          </p>
+        </div>
+        <div>
+          <span class="text-xs text-slate-500 uppercase font-semibold">Email Address</span>
+          <p class="text-sm font-semibold text-slate-300 mt-1 select-all">
+            {{ userProfile()?.email }}
+          </p>
+        </div>
+      </div>
+
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6 pt-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label class="text-slate-400">First Name</mat-label>
+              <input matInput formControlName="first_name" placeholder="John" class="text-white" />
+              <mat-icon matSuffix class="text-slate-400">badge</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label class="text-slate-400">Last Name</mat-label>
+              <input matInput formControlName="last_name" placeholder="Doe" class="text-white" />
+              <mat-icon matSuffix class="text-slate-400">badge</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-2">
+          <a routerLink="/dashboard" mat-button class="text-slate-400 hover:text-slate-200">
+            Cancel
+          </a>
+          <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid || saving()" class="px-6 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold shadow-lg shadow-indigo-600/20 text-white">
+            @if (saving()) {
+              <div class="flex items-center gap-2">
+                <mat-spinner diameter="18" color="accent"></mat-spinner>
+                <span>Saving Changes...</span>
+              </div>
+            } @else {
+              <span>Save Changes</span>
+            }
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>

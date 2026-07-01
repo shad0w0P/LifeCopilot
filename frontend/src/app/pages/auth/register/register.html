@@ -1,0 +1,76 @@
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900 px-4 py-12 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8 bg-white/5 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl transition duration-500 hover:border-indigo-500/30">
+    <div class="text-center">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-pink-500 to-indigo-500 text-white shadow-lg shadow-indigo-500/20 mb-4">
+        <mat-icon class="scale-125">app_registration</mat-icon>
+      </div>
+      <h2 class="text-3xl font-extrabold text-white tracking-tight">Create Vault</h2>
+      <p class="mt-2 text-sm text-slate-400">Initialize your secure personal assistant dashboard</p>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="bg-red-500/10 border border-red-500/20 text-red-200 text-sm p-4 rounded-lg flex items-center gap-2">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage() }}</span>
+      </div>
+    }
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+      <div class="space-y-4">
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label class="text-slate-400">Email Address</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="you@example.com" class="text-white" />
+            <mat-icon matSuffix class="text-slate-400">email</mat-icon>
+            @if (registerForm.controls.email.invalid && registerForm.controls.email.touched) {
+              <mat-error>Please enter a valid email address</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label class="text-slate-400">Password</mat-label>
+            <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" placeholder="••••••••" class="text-white" />
+            <button mat-icon-button matSuffix type="button" (click)="hidePassword.set(!hidePassword())" class="text-slate-400">
+              <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            @if (registerForm.controls.password.invalid && registerForm.controls.password.touched) {
+              <mat-error>Password must be at least 6 characters</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label class="text-slate-400">Confirm Password</mat-label>
+            <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="confirmPassword" placeholder="••••••••" class="text-white" />
+            @if (registerForm.hasError('notSame') && registerForm.controls.confirmPassword.touched) {
+              <mat-error>Passwords do not match</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div>
+        <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid || loading()" class="w-full py-6 rounded-xl text-lg font-bold bg-gradient-to-r from-pink-600 to-indigo-600 hover:from-pink-500 hover:to-indigo-500 shadow-lg shadow-pink-600/30 text-white transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+          @if (loading()) {
+            <div class="flex items-center justify-center gap-2">
+              <mat-spinner diameter="20" color="accent"></mat-spinner>
+              <span>Registering account...</span>
+            </div>
+          } @else {
+            <span>Create Free Account</span>
+          }
+        </button>
+      </div>
+
+      <div class="text-center mt-4">
+        <p class="text-sm text-slate-400">
+          Already have a vault? 
+          <a routerLink="/auth/login" class="font-medium text-indigo-400 hover:text-indigo-300 hover:underline ml-1">Sign in here</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
