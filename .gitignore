@@ -1,23 +1,71 @@
-### AL ###
-#Template for AL projects for Dynamics 365 Business Central
-#launch.json folder
+# Dependency directories
+node_modules/
+jspm_packages/
+web_packages/
+
+# Build outputs
+dist/
+tmp/
+out-tsc/
+bazel-out/
+.angular/
+build/
+bin/
+obj/
+
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Local databases and development artifacts
+*.db
+*.sqlite
+database/data/
+
+# Environment configurations (secret files)
+.env
+.env.local
+.env.*.local
+!*.example
+
+# IDEs and Editors
 .vscode/
-#Cache folder
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.project
+.classpath
+.settings/
 .alcache/
-#Symbols folder
 .alpackages/
-#Snapshots folder
 .snapshots/
-#Testing Output folder
 .output/
-#Extension App-file
 *.app
-#Rapid Application Development File
 rad.json
-#Translation Base-file
-*.g.xlf
-#License-files
-*.bclicense
-*.flf
-#Test results file
 TestResults.xml
+
+# System files
+.DS_Store
+Thumbs.db
+Desktop.ini
