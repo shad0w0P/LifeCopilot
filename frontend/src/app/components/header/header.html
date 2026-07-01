@@ -1,20 +1,61 @@
-<!-- Unified Header Widget (Presentational) -->
-<header class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6 mb-8">
-  <div>
-    <h2 class="text-3xl font-bold tracking-tight text-white">
-      Welcome back, {{ firstName || 'User' }}!
-    </h2>
-    <p class="text-slate-400 text-sm mt-1">Here is the status of your LifeCopilot personal assistant.</p>
-  </div>
-  <div class="flex items-center gap-4">
-    <div class="hidden sm:flex flex-col text-right">
-      <span class="text-xs text-slate-500">Logged in as</span>
-      <span class="text-sm font-semibold text-slate-300 truncate max-w-[200px]" title="{{ email }}">{{ email }}</span>
-    </div>
-    
-    <button mat-flat-button color="warn" (click)="logout.emit()" class="flex items-center gap-2 bg-red-600/10 hover:bg-red-600/20 text-red-400 border border-red-500/20 rounded-lg py-1.5 px-3">
-      <mat-icon class="scale-90">logout</mat-icon>
-      <span>Sign Out</span>
+<div class="w-full flex items-center justify-between py-4 px-6 xl:px-8 bg-white border-b border-slate-100 z-10 shrink-0">
+  
+  <!-- Left Side: Search Bar & Hamburger -->
+  <div class="flex-1 flex items-center max-w-md gap-3">
+    <!-- Hamburger Button -->
+    <button type="button" (click)="layoutService.toggleMobileSidebar()" class="md:hidden w-10 h-10 flex items-center justify-center rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-50 border border-slate-100 transition shrink-0 cursor-pointer">
+      <mat-icon>menu</mat-icon>
     </button>
+
+    <div class="relative flex-1 flex items-center">
+      <mat-icon class="absolute left-3.5 text-slate-400 scale-90">search</mat-icon>
+      <input type="text" placeholder="Search anything..." class="w-full pl-11 pr-20 py-2.5 bg-slate-50 border border-slate-200/80 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500/50 focus:bg-white transition" />
+      <div class="absolute right-3 px-1.5 py-0.5 border border-slate-200 rounded-md bg-white text-[10px] font-bold text-slate-400 tracking-wider uppercase select-none">
+        Ctrl + K
+      </div>
+    </div>
   </div>
-</header>
+
+  <!-- Right Side: Controls & Avatar -->
+  <div class="flex items-center gap-4">
+    
+    <!-- Notification Bell -->
+    <button type="button" class="relative w-10 h-10 flex items-center justify-center rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-50 border border-slate-100 transition">
+      <mat-icon class="scale-95">notifications_none</mat-icon>
+      <!-- Notification Badge -->
+      <span class="absolute top-2 right-2 w-4.5 h-4.5 rounded-full bg-rose-500 text-white text-[9px] font-black flex items-center justify-center border border-white">
+        3
+      </span>
+    </button>
+
+    <!-- Dark Mode Toggle -->
+    <button type="button" class="w-10 h-10 flex items-center justify-center rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-50 border border-slate-100 transition">
+      <mat-icon class="scale-90">dark_mode</mat-icon>
+    </button>
+
+    <!-- Divider -->
+    <div class="h-6 w-px bg-slate-200"></div>
+
+    <!-- User Profile Dropdown trigger -->
+    <button type="button" [matMenuTriggerFor]="userMenu" class="flex items-center gap-2 select-none hover:opacity-90 focus:outline-none">
+      <div class="w-10 h-10 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&auto=format&fit=crop" alt="User Profile" class="w-full h-full object-cover" />
+      </div>
+    </button>
+
+    <mat-menu #userMenu="matMenu" xPosition="before" class="rounded-xl shadow-lg mt-2 border border-slate-100">
+      <div class="px-4 py-2.5 border-b border-slate-100 max-w-[200px]">
+        <p class="text-xs font-bold text-slate-700 truncate">{{ firstName || 'User Account' }}</p>
+        <p class="text-[10px] text-slate-400 truncate">{{ email }}</p>
+      </div>
+      <button mat-menu-item routerLink="/profile" class="text-xs font-medium text-slate-600">
+        <mat-icon class="scale-75 text-slate-500 mr-2">person</mat-icon>
+        <span>Profile Settings</span>
+      </button>
+      <button mat-menu-item (click)="logout.emit()" class="text-xs font-semibold text-red-600">
+        <mat-icon class="scale-75 text-red-500 mr-2">logout</mat-icon>
+        <span>Sign Out</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>
