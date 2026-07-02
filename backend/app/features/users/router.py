@@ -71,7 +71,7 @@ async def update_current_user_profile(
     db_user = await UserService.get_by_firebase_uid(db, current_user.uid)
     if not db_user:
         raise HTTPException(
-            status_code=status.HTTP_444_NOT_FOUND,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="User profile not found."
         )
     return await UserService.update_user(db, db_user, user_in)

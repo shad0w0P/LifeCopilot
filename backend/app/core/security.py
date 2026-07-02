@@ -33,19 +33,19 @@ class FirebaseUser:
         self.verified = verified
 
 async def verify_firebase_token(
-    credentials: Optional[HTTPAuthorizationCredentials] = Security(security_scheme)
+    auth_credentials: Optional[HTTPAuthorizationCredentials] = Security(security_scheme)
 ) -> FirebaseUser:
     """
     FastAPI dependency to extract and verify the Firebase ID Token from
     the HTTP Bearer Authorization header.
     """
-    if not credentials:
+    if not auth_credentials:
         raise HTTPException(
             status_code=401, 
             detail="Missing Authorization header. Use Bearer token."
         )
         
-    token = credentials.credentials
+    token = auth_credentials.credentials
     try:
         # Verify the ID token signature, audience, and expiration
         decoded_token = auth.verify_id_token(token)
